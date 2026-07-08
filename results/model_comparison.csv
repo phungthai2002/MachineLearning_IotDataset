@@ -1,0 +1,3 @@
+Model,F1_macro,Accuracy
+Baseline,0.9919286223367287,0.9999925208481358
+Feature_Selection,1.0,1.0

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>IoT Intrusion Detection</title>
+
+<style>
+    .field {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-size: 13px;
+    margin-bottom: 4px;
+    color: #475569;
+    font-weight: 600;
+}
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #38bdf8, #6366f1);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* CONTAINER */
+.container {
+    background: white;
+    margin: 40px;
+    padding: 30px;
+    border-radius: 20px;
+    width: 700px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+/* HEADER */
+h1 {
+    text-align: center;
+    color: #1e293b;
+}
+
+.subtitle {
+    text-align: center;
+    color: #64748b;
+    margin-bottom: 20px;
+}
+
+/* INFO BOX */
+.info {
+    background: #f1f5f9;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+/* GRID INPUT */
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+input {
+    padding: 14px;
+    font-size: 15px;
+    border-radius: 10px;
+    border: 1px solid #cbd5f5;
+    transition: 0.2s;
+}
+
+input:focus {
+    border-color: #6366f1;
+    transform: scale(1.03);
+}
+
+/* BUTTON */
+button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #6366f1, #3b82f6);
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+
+/* RESULT */
+.result {
+    margin-top: 20px;
+    text-align: center;
+}
+
+/* BADGE */
+.badge {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 12px;
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+    margin-top: 10px;
+    animation: pop 0.4s ease;
+}
+
+.DDoS { background: #ef4444; }
+.Normal { background: #22c55e; }
+.Recon { background: #f59e0b; }
+.Theft { background: #a855f7; }
+
+/* ANIMATIONS */
+@keyframes fadeIn {
+    from {opacity: 0; transform: translateY(20px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+@keyframes pop {
+    from {transform: scale(0.5); opacity: 0;}
+    to {transform: scale(1); opacity: 1;}
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🚀 IoT Intrusion Detection System</h1>
+    <div class="subtitle">
+        Real-time attack classification using Machine Learning
+    </div>
+
+    <div class="info">
+        <b>Model:</b> Random Forest (trained on BoT-IoT dataset) <br>
+        <b>Features:</b> Flow-level network traffic <br>
+        <b>Classes:</b> DDoS, Normal, Reconnaissance, Theft
+    </div>
+
+<div class="grid">
+
+    <div class="field">
+        <label>Protocol (proto)</label>
+        <input id="proto" value="4">
+    </div>
+
+    <div class="field">
+        <label>Source Port</label>
+        <input id="sport" value="6226">
+    </div>
+
+    <div class="field">
+        <label>Destination Port</label>
+        <input id="dport" value="80">
+    </div>
+
+    <div class="field">
+        <label>Packets</label>
+        <input id="pkts" value="15">
+    </div>
+
+    <div class="field">
+        <label>Bytes</label>
+        <input id="bytes" value="900">
+    </div>
+
+    <div class="field">
+        <label>Duration</label>
+        <input id="dur" value="13.6">
+    </div>
+
+    <div class="field">
+        <label>Src Packets</label>
+        <input id="spkts" value="15">
+    </div>
+
+    <div class="field">
+        <label>Dst Packets</label>
+        <input id="dpkts" value="0">
+    </div>
+
+    <div class="field">
+        <label>Src Bytes</label>
+        <input id="sbytes" value="900">
+    </div>
+
+    <div class="field">
+        <label>Dst Bytes</label>
+        <input id="dbytes" value="0">
+    </div>
+
+    <div class="field">
+        <label>Rate</label>
+        <input id="rate" value="1.02">
+    </div>
+
+    <div class="field">
+        <label>Src Rate</label>
+        <input id="srate" value="1.02">
+    </div>
+
+    <div class="field">
+        <label>Dst Rate</label>
+        <input id="drate" value="0">
+    </div>
+
+    <div class="field">
+        <label>State</label>
+        <input id="state" value="3">
+    </div>
+
+</div>
+
+    <button onclick="predict()">🔍 Predict Attack</button>
+
+    <div class="result" id="result"></div>
+
+</div>
+
+<script>
+function predict() {
+    const data = {
+        proto: parseFloat(proto.value),
+        sport: parseFloat(sport.value),
+        dport: parseFloat(dport.value),
+        pkts: parseFloat(pkts.value),
+        bytes: parseFloat(bytes.value),
+        dur: parseFloat(dur.value),
+        spkts: parseFloat(spkts.value),
+        dpkts: parseFloat(dpkts.value),
+        sbytes: parseFloat(sbytes.value),
+        dbytes: parseFloat(dbytes.value),
+        rate: parseFloat(rate.value),
+        srate: parseFloat(srate.value),
+        drate: parseFloat(drate.value),
+        state: parseFloat(state.value)
+    };
+
+    document.getElementById("result").innerHTML = "⏳ Predicting...";
+
+    fetch("/predict", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then(result => {
+        const label = result.prediction;
+
+        document.getElementById("result").innerHTML = `
+            <div>Prediction Result:</div>
+            <div class="badge ${label}">${label}</div>
+        `;
+    });
+}
+
+</script>
+
+</body>
+</html>
